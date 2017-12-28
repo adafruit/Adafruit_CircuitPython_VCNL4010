@@ -163,7 +163,6 @@ class VCNL4010:
         timing |= (val << 3) & 0xFF
         self._write_u8(_VCNL4010_MODTIMING, timing)
 
-
     # Pylint gets confused with loops and return values.  Disable the spurious
     # warning for the next few functions (it hates when a loop returns a value).
     # pylint: disable=inconsistent-return-statements

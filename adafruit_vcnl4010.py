@@ -66,7 +66,7 @@ FREQUENCY_390K625  = 0
 
 # Disable pylint's name warning as it causes too much noise.  Suffixes like
 # BE (big-endian) or mA (milli-amps) don't confirm to its conventions--by
-# design (clarify of code and explicit units).  Disable this globally to prevent
+# design (clarity of code and explicit units).  Disable this globally to prevent
 # littering the code with pylint disable and enable and making it less readable.
 # pylint: disable=invalid-name
 

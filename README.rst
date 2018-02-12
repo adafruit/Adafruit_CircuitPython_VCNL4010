@@ -3,9 +3,7 @@ Introduction
 ============
 
 .. image:: https://readthedocs.org/projects/adafruit-circuitpython-vcnl4010/badge/?version=latest
-
     :target: https://circuitpython.readthedocs.io/projects/vcnl4010/en/latest/
-
     :alt: Documentation Status
 
 .. image :: https://img.shields.io/discord/327254708534116352.svg

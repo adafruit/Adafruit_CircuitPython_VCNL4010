@@ -158,12 +158,14 @@ class VCNL4010:
 
     @property
     def frequency(self):
-        """The frequency of proximity measurements.  Must be a value
-        of:
-         - FREQUENCY_3M125: 3.125 Mhz
-         - FREQUENCY_1M5625: 1.5625 Mhz
-         - FREQUENCY_781K25: 781.25 Khz
-         - FREQUENCY_390K625: 390.625 Khz (default)
+        """
+        The frequency of proximity measurements.  Must be a value of:
+
+        - FREQUENCY_3M125: 3.125 Mhz
+        - FREQUENCY_1M5625: 1.5625 Mhz
+        - FREQUENCY_781K25: 781.25 Khz
+        - FREQUENCY_390K625: 390.625 Khz (default)
+
         See the datasheet for how frequency changes the proximity detection
         accuracy.
         """

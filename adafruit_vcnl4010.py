@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 """
-`Adafruit_VCNL4010`
+`adafruit_vcnl4010`
 ====================================================
 
 CircuitPython module for the VCNL4010 proximity and light sensor.  See

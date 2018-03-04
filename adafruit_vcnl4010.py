@@ -24,9 +24,23 @@
 ====================================================
 
 CircuitPython module for the VCNL4010 proximity and light sensor.  See
-examples/simpletest.py for an example of the usage.
+examples/vcnl4010_simpletest.py for an example of the usage.
 
 * Author(s): Tony DiCola
+
+Implementation Notes
+--------------------
+
+**Hardware:**
+
+* Adafruit `VCNL4010 Proximity/Light sensor breakout
+  <https://www.adafruit.com/product/466>`_ (Product ID: 466)
+
+**Software and Dependencies:**
+
+* Adafruit CircuitPython firmware for the ESP8622 and M0-based boards:
+  https://github.com/adafruit/circuitpython/releases
+* Adafruit's Bus Device library: https://github.com/adafruit/Adafruit_CircuitPython_BusDevice
 """
 from micropython import const
 
@@ -114,7 +128,7 @@ class VCNL4010:
 
     @property
     def led_current(self):
-        """Get and set the current of the LED.  The value is in units of 10mA
+        """The current of the LED.  The value is in units of 10mA
         and can only be set to 0 (0mA/off) to 20 (200mA).  See the datasheet
         for how LED current impacts proximity measurements.  The default is
         200mA.
@@ -128,7 +142,7 @@ class VCNL4010:
 
     @property
     def led_current_mA(self):
-        """Get and set the current of the LED in milli-amps.  The value here is
+        """The current of the LED in milli-amps.  The value here is
         specified in a milliamps from 0-200.  Note that this value will be
         quantized down to a smaller less-accurate value as the chip only
         supports current changes in 10mA increments, i.e. a value of 123 mA will
@@ -144,7 +158,7 @@ class VCNL4010:
 
     @property
     def frequency(self):
-        """Get and set the frequency of proximity measurements.  Must be a value
+        """The frequency of proximity measurements.  Must be a value
         of:
          - FREQUENCY_3M125: 3.125 Mhz
          - FREQUENCY_1M5625: 1.5625 Mhz
@@ -168,7 +182,7 @@ class VCNL4010:
     # pylint: disable=inconsistent-return-statements
     @property
     def proximity(self):
-        """Get the detected proximity of an object in front of the sensor.  This
+        """Returns the detected proximity of an object in front of the sensor.  This
         is a unit-less unsigned 16-bit value (0-65535) INVERSELY proportional
         to the distance of an object in front of the sensor (up to a max of
         ~200mm).  For example a value of 10 is an object farther away than a
@@ -189,7 +203,7 @@ class VCNL4010:
 
     @property
     def ambient(self):
-        """Get the detected ambient light in front of the sensor.  This is
+        """Returns the detected ambient light in front of the sensor.  This is
         a unit-less unsigned 16-bit value (0-65535) with higher values for
         more detected light.  See the ambient_lux property for a value in lux.
         """
@@ -208,7 +222,7 @@ class VCNL4010:
 
     @property
     def ambient_lux(self):
-        """Get the detected ambient light in front of the sensor as a value in
+        """Returns the detected ambient light in front of the sensor as a value in
         lux.
         """
         return self.ambient * _VCNL4010_AMBIENT_LUX_SCALE

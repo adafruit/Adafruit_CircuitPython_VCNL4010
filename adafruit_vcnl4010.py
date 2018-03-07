@@ -184,7 +184,7 @@ class VCNL4010:
     # pylint: disable=inconsistent-return-statements
     @property
     def proximity(self):
-        """Returns the detected proximity of an object in front of the sensor.  This
+        """The detected proximity of an object in front of the sensor.  This
         is a unit-less unsigned 16-bit value (0-65535) INVERSELY proportional
         to the distance of an object in front of the sensor (up to a max of
         ~200mm).  For example a value of 10 is an object farther away than a
@@ -205,7 +205,7 @@ class VCNL4010:
 
     @property
     def ambient(self):
-        """Returns the detected ambient light in front of the sensor.  This is
+        """The detected ambient light in front of the sensor.  This is
         a unit-less unsigned 16-bit value (0-65535) with higher values for
         more detected light.  See the ambient_lux property for a value in lux.
         """
@@ -224,7 +224,7 @@ class VCNL4010:
 
     @property
     def ambient_lux(self):
-        """Returns the detected ambient light in front of the sensor as a value in
+        """The detected ambient light in front of the sensor as a value in
         lux.
         """
         return self.ambient * _VCNL4010_AMBIENT_LUX_SCALE

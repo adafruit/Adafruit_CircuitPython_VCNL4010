@@ -107,17 +107,15 @@ class VCNL4010:
         # Read an 8-bit unsigned value from the specified 8-bit address.
         with self._device as i2c:
             self._BUFFER[0] = address & 0xFF
-            i2c.write(self._BUFFER, end=1, stop=False)
-            i2c.readinto(self._BUFFER, end=1)
-        return self._BUFFER[0]
+            i2c.write_then_readinto(self._BUFFER, self._BUFFER, out_end=1, in_start=1)
+        return self._BUFFER[1]
 
     def _read_u16BE(self, address):
         # Read a 16-bit big-endian unsigned value from the specified 8-bit address.
         with self._device as i2c:
             self._BUFFER[0] = address & 0xFF
-            i2c.write(self._BUFFER, end=1, stop=False)
-            i2c.readinto(self._BUFFER, end=2)
-        return (self._BUFFER[0] << 8) | self._BUFFER[1]
+            i2c.write_then_readinto(self._BUFFER, self._BUFFER, out_end=1, in_start=1)
+        return (self._BUFFER[1] << 8) | self._BUFFER[2]
 
     def _write_u8(self, address, val):
         # Write an 8-bit unsigned value to the specified 8-bit address.

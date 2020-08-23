@@ -51,7 +51,6 @@ __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_VCNL4010.git"
 
 
-# pylint: disable=bad-whitespace
 # Internal constants:
 _VCNL4010_I2CADDR_DEFAULT = const(0x13)
 _VCNL4010_COMMAND = const(0x80)
@@ -76,7 +75,6 @@ FREQUENCY_3M125 = 3
 FREQUENCY_1M5625 = 2
 FREQUENCY_781K25 = 1
 FREQUENCY_390K625 = 0
-# pylint: enable=bad-whitespace
 
 # Disable pylint's name warning as it causes too much noise.  Suffixes like
 # BE (big-endian) or mA (milli-amps) don't confirm to its conventions--by

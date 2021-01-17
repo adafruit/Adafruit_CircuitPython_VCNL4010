@@ -1,6 +1,8 @@
+# SPDX-FileCopyrightText: 2017 Tony DiCola for Adafruit Industries
+# SPDX-License-Identifier: MIT
+
 # Simple demo of the VCNL4010 proximity and light sensor.
 # Will print the proximity and ambient light every second.
-# Author: Tony DiCola
 import time
 
 import board

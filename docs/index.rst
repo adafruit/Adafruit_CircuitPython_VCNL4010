@@ -23,6 +23,8 @@ Table of Contents
 .. toctree::
     :caption: Tutorials
 
+    VCNL4010 Proximity/Light sensor Learning Guide <https://learn.adafruit.com/using-vcnl4010-proximity-sensor/>
+
 .. toctree::
     :caption: Related Products
 

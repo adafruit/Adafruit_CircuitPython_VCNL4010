@@ -4,15 +4,11 @@
 # Simple demo of the VCNL4010 proximity and light sensor.
 # Will print the proximity and ambient light every second.
 import time
-
 import board
-import busio
-
 import adafruit_vcnl4010
 
 
-# Initialize I2C bus and VCNL4010 module.
-i2c = busio.I2C(board.SCL, board.SDA)
+i2c = board.I2C()
 sensor = adafruit_vcnl4010.VCNL4010(i2c)
 
 # You can optionally adjust the sensor LED current.  The default is 200mA

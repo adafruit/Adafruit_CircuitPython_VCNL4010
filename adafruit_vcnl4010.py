@@ -21,8 +21,9 @@ Implementation Notes
 
 **Software and Dependencies:**
 
-* Adafruit CircuitPython firmware for the ESP8622 and M0-based boards:
-  https://github.com/adafruit/circuitpython/releases
+* Adafruit CircuitPython firmware for the supported boards:
+  https://circuitpython.org/downloads
+
 * Adafruit's Bus Device library: https://github.com/adafruit/Adafruit_CircuitPython_BusDevice
 """
 from micropython import const
@@ -67,7 +68,38 @@ FREQUENCY_390K625 = 0
 
 
 class VCNL4010:
-    """Vishay VCNL4010 proximity and ambient light sensor."""
+    """Vishay VCNL4010 proximity and ambient light sensor.
+
+    :param ~busio.I2C i2c: The I2C bus the VCNL4010 is connected to
+    :param int address: (optional) The I2C address of the device. Defaults to :const:`0x13`
+
+    **Quickstart: Importing and using the VCNL4010**
+
+        Here is an example of using the :class:`VCNL4010` class.
+        First you will need to import the libraries to use the sensor
+
+        .. code-block:: python
+
+            import board
+            import adafruit_vcnl4010
+
+        Once this is done you can define your `board.I2C` object and define your sensor object
+
+        .. code-block:: python
+
+            i2c = board.I2C()   # uses board.SCL and board.SDA
+            sensor = adafruit_vcnl4010.VCNL4010(i2c)
+
+        Now you have access to the :attr:`sensor.proximity` and
+        :attr:`ambient_lux` attributes
+
+
+        .. code-block:: python
+
+            proximity = sensor.proximity
+            ambient_lux = sensor.ambient_lux
+
+    """
 
     # Class-level buffer for reading and writing data with the sensor.
     # This reduces memory allocations but means the code is not re-entrant or
@@ -127,7 +159,7 @@ class VCNL4010:
         supports current changes in 10mA increments, i.e. a value of 123 mA will
         actually use 120 mA.  See the datasheet for how the LED current impacts
         proximity measurements, and the led_current property to explicitly set
-        values without quanitization or unit conversion.
+        values without quantization or unit conversion.
         """
         return self.led_current * 10
 
@@ -186,7 +218,7 @@ class VCNL4010:
     def ambient(self):
         """The detected ambient light in front of the sensor.  This is
         a unit-less unsigned 16-bit value (0-65535) with higher values for
-        more detected light.  See the ambient_lux property for a value in lux.
+        more detected light.  See the :attr:`ambient_lux property` for a value in lux.
         """
         # Clear interrupt.
         status = self._read_u8(_VCNL4010_INTSTAT)

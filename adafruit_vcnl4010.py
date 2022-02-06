@@ -55,10 +55,21 @@ _VCNL4010_PROXIMITYREADY = const(0x20)
 _VCNL4010_AMBIENT_LUX_SCALE = 0.25  # Lux value per 16-bit result value.
 
 # User-facing constants:
-FREQUENCY_3M125 = 3
-FREQUENCY_1M5625 = 2
-FREQUENCY_781K25 = 1
-FREQUENCY_390K625 = 0
+# Number of proximity measuremenrs per second
+FREQUENCY_1_95 = 0
+FREQUENCY_3_90625 = 1
+FREQUENCY_7_8125 = 2
+FREQUENCY_16_625 = 3
+FREQUENCY_31_25 = 4
+FREQUENCY_62_5 = 5
+FREQUENCY_125 = 6
+FREQUENCY_250 = 7
+
+# Proximity modulator timing
+MODULATION_3M125 = 3 
+MODULATION_1M5625 = 2
+MODULATION_781K25 = 1
+MODULATION_390K625 = 0
 
 # Disable pylint's name warning as it causes too much noise.  Suffixes like
 # BE (big-endian) or mA (milli-amps) don't confirm to its conventions--by
@@ -113,7 +124,8 @@ class VCNL4010:
         if (revision & 0xF0) != 0x20:
             raise RuntimeError("Failed to find VCNL4010, check wiring!")
         self.led_current = 20
-        self.frequency = FREQUENCY_390K625
+        self.frequency = FREQUENCY_1_95
+        self.modulation = MODULATION_390K625
         self._write_u8(_VCNL4010_INTCONTROL, 0x08)
 
     def _read_u8(self, address):
@@ -153,8 +165,8 @@ class VCNL4010:
 
     @property
     def led_current_mA(self):
-        """The current of the LED in milli-amps.  The value here is
-        specified in a milliamps from 0-200.  Note that this value will be
+        """The current of the LED in milliamps.  The value here is
+        specified in milliamps from 0-200.  Note that this value will be
         quantized down to a smaller less-accurate value as the chip only
         supports current changes in 10mA increments, i.e. a value of 123 mA will
         actually use 120 mA.  See the datasheet for how the LED current impacts
@@ -170,20 +182,41 @@ class VCNL4010:
     @property
     def frequency(self):
         """
-        The frequency of proximity measurements.  Must be a value of:
+        The frequency of proximity measurements per second.  Must be a value of:
 
-        - FREQUENCY_3M125: 3.125 Mhz
-        - FREQUENCY_1M5625: 1.5625 Mhz
-        - FREQUENCY_781K25: 781.25 Khz
-        - FREQUENCY_390K625: 390.625 Khz (default)
+        - FREQUENCY_1_95: 1.95 measurements/sec (default)
+        - FREQUENCY_3_90625: 3.90625 measurements/sec
+        - FREQUENCY_7_8125: 7.8125 measurements/sec
+        - FREQUENCY_16_625: 16.625 measurements/sec
+        - FREQUENCY_31_25: 31.25 measurements/sec
+        - FREQUENCY_62_5: 62.5 measurements/sec
+        - FREQUENCY_125: 125 measurements/sec
+        - FREQUENCY_250: 250 measurements/sec
 
-        See the datasheet for how frequency changes the proximity detection
-        accuracy.
+        See the datasheet for how frequency changes the power consumption and
+        proximity detection accuracy.
         """
-        return (self._read_u8(_VCNL4010_MODTIMING) >> 3) & 0x03
+        return self._read_u8(_VCNL4010_PROXRATE)
 
     @frequency.setter
     def frequency(self, val):
+        assert 0 <= val <= 7
+        self._write_u8(_VCNL4010_PROXRATE, val)
+
+    @property
+    def modulation(self):
+        """
+        Proximity modulator timimg.  Must be a value of:
+
+        - MODULATION_3M125: 3.125 Mhz
+        - MODULATION_1M5625: 1.5625 Mhz
+        - MODULATION_781K25: 781.25 Khz
+        - MODULATION_390K625: 390.625 Khz (default)
+        """
+        return (self._read_u8(_VCNL4010_MODTIMING) >> 3) & 0x03
+
+    @modulation.setter
+    def modulation(self, val):
         assert 0 <= val <= 3
         timing = self._read_u8(_VCNL4010_MODTIMING)
         timing &= ~0b00011000

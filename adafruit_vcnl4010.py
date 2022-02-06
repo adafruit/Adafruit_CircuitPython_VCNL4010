@@ -208,14 +208,14 @@ class VCNL4010:
         """
         Proximity modulator timimg. This is the frequency of the IR square
         wave used for the proximity measurement.
-        
-        Must be a value of:
+
+                Must be a value of:
 
         - FREQUENCY_3M125: 3.125 Mhz
         - FREQUENCY_1M5625: 1.5625 Mhz
         - FREQUENCY_781K25: 781.25 Khz
         - FREQUENCY_390K625: 390.625 Khz (default)
-        
+
         The datasheet recommended leaving this at the default.
         """
         return (self._read_u8(_VCNL4010_MODTIMING) >> 3) & 0x03

@@ -278,7 +278,7 @@ class VCNL4010:
     # pylint: enable=inconsistent-return-statements
 
     @property
-    def ambient_lux(self) -> int:
+    def ambient_lux(self) -> float:
         """The detected ambient light in front of the sensor as a value in
         lux.
         """

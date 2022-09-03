@@ -30,6 +30,11 @@ from micropython import const
 
 from adafruit_bus_device import i2c_device
 
+try:
+    import typing  # pylint: disable=unused-import
+    from busio import I2C
+except ImportError:
+    pass
 
 __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_VCNL4010.git"
@@ -117,7 +122,7 @@ class VCNL4010:
     # thread safe!
     _BUFFER = bytearray(3)
 
-    def __init__(self, i2c, address=_VCNL4010_I2CADDR_DEFAULT):
+    def __init__(self, i2c: I2C, address: int = _VCNL4010_I2CADDR_DEFAULT) -> None:
         self._device = i2c_device.I2CDevice(i2c, address)
         # Verify chip ID.
         revision = self._read_u8(_VCNL4010_PRODUCTID)
@@ -128,21 +133,21 @@ class VCNL4010:
         self.frequency = FREQUENCY_390K625
         self._write_u8(_VCNL4010_INTCONTROL, 0x08)
 
-    def _read_u8(self, address):
+    def _read_u8(self, address: int) -> int:
         # Read an 8-bit unsigned value from the specified 8-bit address.
         with self._device as i2c:
             self._BUFFER[0] = address & 0xFF
             i2c.write_then_readinto(self._BUFFER, self._BUFFER, out_end=1, in_start=1)
         return self._BUFFER[1]
 
-    def _read_u16BE(self, address):
+    def _read_u16BE(self, address: int) -> int:
         # Read a 16-bit big-endian unsigned value from the specified 8-bit address.
         with self._device as i2c:
             self._BUFFER[0] = address & 0xFF
             i2c.write_then_readinto(self._BUFFER, self._BUFFER, out_end=1, in_start=1)
         return (self._BUFFER[1] << 8) | self._BUFFER[2]
 
-    def _write_u8(self, address, val):
+    def _write_u8(self, address: int, val: int) -> None:
         # Write an 8-bit unsigned value to the specified 8-bit address.
         with self._device as i2c:
             self._BUFFER[0] = address & 0xFF
@@ -150,7 +155,7 @@ class VCNL4010:
             i2c.write(self._BUFFER, end=2)
 
     @property
-    def led_current(self):
+    def led_current(self) -> int:
         """The current of the LED.  The value is in units of 10mA
         and can only be set to 0 (0mA/off) to 20 (200mA).  See the datasheet
         for how LED current impacts proximity measurements.  The default is
@@ -159,12 +164,12 @@ class VCNL4010:
         return self._read_u8(_VCNL4010_IRLED) & 0x3F
 
     @led_current.setter
-    def led_current(self, val):
+    def led_current(self, val: int) -> None:
         assert 0 <= val <= 20
         self._write_u8(_VCNL4010_IRLED, val)
 
     @property
-    def led_current_mA(self):
+    def led_current_mA(self) -> int:
         """The current of the LED in milliamps.  The value here is
         specified in milliamps from 0-200.  Note that this value will be
         quantized down to a smaller less-accurate value as the chip only
@@ -176,11 +181,11 @@ class VCNL4010:
         return self.led_current * 10
 
     @led_current_mA.setter
-    def led_current_mA(self, val):
+    def led_current_mA(self, val: int) -> None:
         self.led_current = val // 10
 
     @property
-    def samplerate(self):
+    def samplerate(self) -> int:
         """
         The frequency of proximity measurements per second.  Must be a value of:
 
@@ -199,12 +204,12 @@ class VCNL4010:
         return self._read_u8(_VCNL4010_PROXRATE)
 
     @samplerate.setter
-    def samplerate(self, val):
+    def samplerate(self, val: int) -> None:
         assert 0 <= val <= 7
         self._write_u8(_VCNL4010_PROXRATE, val)
 
     @property
-    def frequency(self):
+    def frequency(self) -> int:
         """
         Proximity modulator timimg. This is the frequency of the IR square
         wave used for the proximity measurement.
@@ -221,7 +226,7 @@ class VCNL4010:
         return (self._read_u8(_VCNL4010_MODTIMING) >> 3) & 0x03
 
     @frequency.setter
-    def frequency(self, val):
+    def frequency(self, val: int) -> None:
         assert 0 <= val <= 3
         timing = self._read_u8(_VCNL4010_MODTIMING)
         timing &= ~0b00011000
@@ -232,7 +237,7 @@ class VCNL4010:
     # warning for the next few functions (it hates when a loop returns a value).
     # pylint: disable=inconsistent-return-statements
     @property
-    def proximity(self):
+    def proximity(self) -> int:
         """The detected proximity of an object in front of the sensor.  This
         is a unit-less unsigned 16-bit value (0-65535) INVERSELY proportional
         to the distance of an object in front of the sensor (up to a max of
@@ -253,7 +258,7 @@ class VCNL4010:
                 return self._read_u16BE(_VCNL4010_PROXIMITYDATA)
 
     @property
-    def ambient(self):
+    def ambient(self) -> int:
         """The detected ambient light in front of the sensor.  This is
         a unit-less unsigned 16-bit value (0-65535) with higher values for
         more detected light.  See the :attr:`ambient_lux property` for a value in lux.
@@ -273,7 +278,7 @@ class VCNL4010:
     # pylint: enable=inconsistent-return-statements
 
     @property
-    def ambient_lux(self):
+    def ambient_lux(self) -> float:
         """The detected ambient light in front of the sensor as a value in
         lux.
         """

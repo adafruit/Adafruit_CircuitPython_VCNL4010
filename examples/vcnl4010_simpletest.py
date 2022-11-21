@@ -8,7 +8,8 @@ import board
 import adafruit_vcnl4010
 
 
-i2c = board.I2C()
+i2c = board.I2C()  # uses board.SCL and board.SDA
+# i2c = board.STEMMA_I2C()  # For using the built-in STEMMA QT connector on a microcontroller
 sensor = adafruit_vcnl4010.VCNL4010(i2c)
 
 # You can optionally adjust the sensor LED current.  The default is 200mA

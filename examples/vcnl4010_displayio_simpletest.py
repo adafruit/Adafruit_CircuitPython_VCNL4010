@@ -5,12 +5,13 @@
 
 # Simple demo of the VCNL4010 proximity sensor using a built-in display.
 import time
+
 import board
 from adafruit_display_text.bitmap_label import Label
-from terminalio import FONT
 from displayio import Group
-import adafruit_vcnl4010
+from terminalio import FONT
 
+import adafruit_vcnl4010
 
 # create a main_group to hold anything we want to show on the display.
 main_group = Group()

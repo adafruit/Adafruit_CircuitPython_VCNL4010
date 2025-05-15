@@ -26,12 +26,13 @@ Implementation Notes
 
 * Adafruit's Bus Device library: https://github.com/adafruit/Adafruit_CircuitPython_BusDevice
 """
-from micropython import const
 
 from adafruit_bus_device import i2c_device
+from micropython import const
 
 try:
-    import typing  # pylint: disable=unused-import
+    import typing
+
     from busio import I2C
 except ImportError:
     pass
@@ -76,11 +77,8 @@ FREQUENCY_1M5625 = 2
 FREQUENCY_781K25 = 1
 FREQUENCY_390K625 = 0
 
-# Disable pylint's name warning as it causes too much noise.  Suffixes like
-# BE (big-endian) or mA (milli-amps) don't confirm to its conventions--by
-# design (clarity of code and explicit units).  Disable this globally to prevent
-# littering the code with pylint disable and enable and making it less readable.
-# pylint: disable=invalid-name
+# Suffixes like BE (big-endian) or mA (milli-amps) are used for clarity
+# of code and explicit units.
 
 
 class VCNL4010:
@@ -233,9 +231,6 @@ class VCNL4010:
         timing |= (val << 3) & 0xFF
         self._write_u8(_VCNL4010_MODTIMING, timing)
 
-    # Pylint gets confused with loops and return values.  Disable the spurious
-    # warning for the next few functions (it hates when a loop returns a value).
-    # pylint: disable=inconsistent-return-statements
     @property
     def proximity(self) -> int:
         """The detected proximity of an object in front of the sensor.  This
@@ -274,8 +269,6 @@ class VCNL4010:
             result = self._read_u8(_VCNL4010_COMMAND)
             if result & _VCNL4010_AMBIENTREADY:
                 return self._read_u16BE(_VCNL4010_AMBIENTDATA)
-
-    # pylint: enable=inconsistent-return-statements
 
     @property
     def ambient_lux(self) -> float:

@@ -4,9 +4,10 @@
 # Simple demo of the VCNL4010 proximity and light sensor.
 # Will print the proximity and ambient light every second.
 import time
-import board
-import adafruit_vcnl4010
 
+import board
+
+import adafruit_vcnl4010
 
 i2c = board.I2C()  # uses board.SCL and board.SDA
 # i2c = board.STEMMA_I2C()  # For using the built-in STEMMA QT connector on a microcontroller
@@ -29,7 +30,7 @@ while True:
     proximity = sensor.proximity  # Proximity has no units and is a 16-bit
     # value.  The LOWER the value the further
     # an object from the sensor (up to ~200mm).
-    print("Proximity: {0}".format(proximity))
+    print(f"Proximity: {proximity}")
     ambient_lux = sensor.ambient_lux
-    print("Ambient light: {0} lux".format(ambient_lux))
+    print(f"Ambient light: {ambient_lux} lux")
     time.sleep(1.0)
